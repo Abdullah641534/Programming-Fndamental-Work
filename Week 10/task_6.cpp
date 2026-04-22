@@ -24,6 +24,7 @@ bool isStrong(int num)
 int main()
 {
     int num;
+    cout<<"Enter number: ";
     cin >> num;
     if (isStrong(num))
         cout << "Strong Number";

@@ -279,7 +279,7 @@ main()
                         getch();
                     }
                     getch();
-                    break;
+                    
                 }
                 else
                 {
