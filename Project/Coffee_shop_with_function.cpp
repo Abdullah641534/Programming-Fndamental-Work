@@ -9,13 +9,14 @@ void viewMenu(string items[], int prices[])
     cout << "Menu:\n";
     for (int i = 0; i < 5; i++)
     {
-        cout << i + 1 << ". " << items[i] << " - " << prices[i] << "\n";
+        cout << i + 1 << ". " << items[i] << " - " << prices[i] << endl;
     }
 }
 
-void orderSingle(int &total, int prices[])
+int orderSingle(int total, int prices[])
 {
     int item, quantity;
+
     cout << "Enter item number: ";
     cin >> item;
 
@@ -23,15 +24,18 @@ void orderSingle(int &total, int prices[])
     {
         cout << "Quantity: ";
         cin >> quantity;
-        total += prices[item - 1] * quantity;
+
+        total = total + prices[item - 1] * quantity;
     }
     else
     {
         cout << "Invalid item!\n";
     }
+
+    return total;
 }
 
-void orderMultiple(int &total, int prices[])
+int orderMultiple(int total, int prices[])
 {
     int item, quantity;
 
@@ -44,10 +48,13 @@ void orderMultiple(int &total, int prices[])
         {
             cout << "Quantity: ";
             cin >> quantity;
-            total += prices[item - 1] * quantity;
+
+            total = total + prices[item - 1] * quantity;
         }
 
     } while (item != 0);
+
+    return total;
 }
 
 void viewBill(int total)
@@ -58,6 +65,7 @@ void viewBill(int total)
 void calculateDiscount(int total)
 {
     float discount = total * 0.1;
+
     cout << "Discount: " << discount << endl;
     cout << "Final Bill: " << total - discount << endl;
 }
@@ -65,10 +73,12 @@ void calculateDiscount(int total)
 void searchItem(string items[], int prices[])
 {
     string s;
+
     cout << "Search item: ";
     cin >> s;
 
     bool found = false;
+
     for (int i = 0; i < 5; i++)
     {
         if (s == items[i])
@@ -79,12 +89,15 @@ void searchItem(string items[], int prices[])
     }
 
     if (!found)
+    {
         cout << "Item not found\n";
+    }
 }
 
 void mostExpensive(string items[], int prices[])
 {
-    int max = prices[0], idx = 0;
+    int max = prices[0];
+    int idx = 0;
 
     for (int i = 1; i < 5; i++)
     {
@@ -100,7 +113,8 @@ void mostExpensive(string items[], int prices[])
 
 void cheapest(string items[], int prices[])
 {
-    int min = prices[0], idx = 0;
+    int min = prices[0];
+    int idx = 0;
 
     for (int i = 1; i < 5; i++)
     {
@@ -114,10 +128,10 @@ void cheapest(string items[], int prices[])
     cout << "Cheapest: " << items[idx] << endl;
 }
 
-void clearBill(int &total)
+int clearBill()
 {
-    total = 0;
     cout << "Bill Cleared!\n";
+    return 0;
 }
 
 // ===== ADMIN FUNCTIONS =====
@@ -134,6 +148,7 @@ void addItem(string items[], int prices[])
 {
     cout << "Enter item: ";
     cin >> items[4];
+
     cout << "Price: ";
     cin >> prices[4];
 }
@@ -141,8 +156,10 @@ void addItem(string items[], int prices[])
 void updatePrice(int prices[])
 {
     int n;
+
     cout << "Item number: ";
     cin >> n;
+
     cout << "New price: ";
     cin >> prices[n - 1];
 }
@@ -150,19 +167,30 @@ void updatePrice(int prices[])
 void deleteItem(string items[], int prices[])
 {
     int n;
+
     cout << "Delete item: ";
     cin >> n;
+
     items[n - 1] = "";
     prices[n - 1] = 0;
 }
 
 void resetMenu(string items[], int prices[])
 {
-    items[0] = "Espresso"; prices[0] = 200;
-    items[1] = "Latte"; prices[1] = 250;
-    items[2] = "Cappuccino"; prices[2] = 300;
-    items[3] = "Mocha"; prices[3] = 280;
-    items[4] = "Americano"; prices[4] = 220;
+    items[0] = "Espresso";
+    prices[0] = 200;
+
+    items[1] = "Latte";
+    prices[1] = 250;
+
+    items[2] = "Cappuccino";
+    prices[2] = 300;
+
+    items[3] = "Mocha";
+    prices[3] = 280;
+
+    items[4] = "Americano";
+    prices[4] = 220;
 
     cout << "Menu Reset Done!\n";
 }
@@ -174,6 +202,7 @@ int main()
     int total = 0;
 
     string items[5] = {"Espresso", "Latte", "Cappuccino", "Mocha", "Americano"};
+
     int prices[5] = {200, 250, 300, 280, 220};
 
     int choice;
@@ -186,14 +215,16 @@ int main()
         cout << "2. Admin login\n";
         cout << "3. Exit\n";
         cout << "Enter choice: ";
+
         cin >> choice;
 
         system("cls");
 
         // ===== USER PANEL =====
+
         if (choice == 1)
         {
-            int userchoice, quantity;
+            int userchoice;
 
             do
             {
@@ -211,17 +242,53 @@ int main()
                 cout << "10.Logout\n";
 
                 cin >> userchoice;
+
                 system("cls");
 
-                if (userchoice == 1) viewMenu(items, prices);
-                else if (userchoice == 2) orderSingle(total, prices);
-                else if (userchoice == 3) orderMultiple(total, prices);
-                else if (userchoice == 4) viewBill(total);
-                else if (userchoice == 5) calculateDiscount(total);
-                else if (userchoice == 6) searchItem(items, prices);
-                else if (userchoice == 7) mostExpensive(items, prices);
-                else if (userchoice == 8) cheapest(items, prices);
-                else if (userchoice == 9) clearBill(total);
+                if (userchoice == 1)
+                {
+                    viewMenu(items, prices);
+                }
+
+                else if (userchoice == 2)
+                {
+                    total = orderSingle(total, prices);
+                }
+
+                else if (userchoice == 3)
+                {
+                    total = orderMultiple(total, prices);
+                }
+
+                else if (userchoice == 4)
+                {
+                    viewBill(total);
+                }
+
+                else if (userchoice == 5)
+                {
+                    calculateDiscount(total);
+                }
+
+                else if (userchoice == 6)
+                {
+                    searchItem(items, prices);
+                }
+
+                else if (userchoice == 7)
+                {
+                    mostExpensive(items, prices);
+                }
+
+                else if (userchoice == 8)
+                {
+                    cheapest(items, prices);
+                }
+
+                else if (userchoice == 9)
+                {
+                    total = clearBill();
+                }
 
                 system("pause");
 
@@ -229,6 +296,7 @@ int main()
         }
 
         // ===== ADMIN PANEL =====
+
         else if (choice == 2)
         {
             string inputUser;
@@ -236,6 +304,7 @@ int main()
 
             cout << "Enter username: ";
             cin >> inputUser;
+
             cout << "Enter password: ";
             cin >> inputPass;
 
@@ -259,15 +328,43 @@ int main()
                     cout << "8. Logout\n";
 
                     cin >> admin_choice;
+
                     system("cls");
 
-                    if (admin_choice == 1) adminViewMenu(items, prices);
-                    else if (admin_choice == 2) addItem(items, prices);
-                    else if (admin_choice == 3) updatePrice(prices);
-                    else if (admin_choice == 4) deleteItem(items, prices);
-                    else if (admin_choice == 5) searchItem(items, prices);
-                    else if (admin_choice == 6) cout << "Total Sales: " << total << endl;
-                    else if (admin_choice == 7) resetMenu(items, prices);
+                    if (admin_choice == 1)
+                    {
+                        adminViewMenu(items, prices);
+                    }
+
+                    else if (admin_choice == 2)
+                    {
+                        addItem(items, prices);
+                    }
+
+                    else if (admin_choice == 3)
+                    {
+                        updatePrice(prices);
+                    }
+
+                    else if (admin_choice == 4)
+                    {
+                        deleteItem(items, prices);
+                    }
+
+                    else if (admin_choice == 5)
+                    {
+                        searchItem(items, prices);
+                    }
+
+                    else if (admin_choice == 6)
+                    {
+                        cout << "Total Sales: " << total << endl;
+                    }
+
+                    else if (admin_choice == 7)
+                    {
+                        resetMenu(items, prices);
+                    }
 
                     system("pause");
 
@@ -285,4 +382,6 @@ int main()
             break;
         }
     }
+
+    return 0;
 }
